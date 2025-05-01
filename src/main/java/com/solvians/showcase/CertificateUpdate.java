@@ -3,6 +3,9 @@ package com.solvians.showcase;
 import com.solvians.showcase.util.AppUtil;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CertificateUpdate {
     private Long timestamp = System.currentTimeMillis();
@@ -54,14 +57,37 @@ public class CertificateUpdate {
     }
 
     public int calculateChecksum(String isin) {
-        for (int i = 0; i < isin.length(); i++) {
+        for (int i = 0; i < 3; i++) {
             char ch = isin.charAt(i);
             if (ch >= '0' && ch <= '9') {
                 continue;
             }
             int tableValue = AppUtil.getConversionValue(ch);
-            isin = isin.replace(String.valueOf(ch), String.valueOf(tableValue));
+            StringBuilder stringBuilder = new StringBuilder(tableValue);
+            isin = isin.replace(String.valueOf(ch), stringBuilder.reverse().toString());
         }
+        int sum = 0;
+        List<Integer> list = new ArrayList<>();
+        for (int i = isin.length() - 1; i >= 0; i--) {
+            char ch = isin.charAt(i);
+            int numValue = Character.getNumericValue(ch);
+            list.add(10 * numValue);
+            if (i % 2 != 0) {
+                sum += (2 * numValue);
+            } else {
+                sum += numValue;
+            }
+        }
+
+        list = list.stream().sorted().collect(Collectors.toList());
+        for (Integer singleNum : list) {
+            if (singleNum == sum) {
+                return 0;
+            } else if (singleNum > sum) {
+                return singleNum - sum;
+            }
+        }
+
         return 0;
     }
 }

@@ -26,7 +26,7 @@ class CertificateUpdateTest {
     @Test
     public void replaceWithConversionTable() {
         String isin = "EQ2366618350";
-        for (int i = 0; i < isin.length(); i++) {
+        for (int i = 0; i < 3; i++) {
             char ch = isin.charAt(i);
             if (ch >= '0' && ch <= '9') {
                 continue;
@@ -36,4 +36,15 @@ class CertificateUpdateTest {
         }
         assertEquals("14262366618350", isin);
     }
+
+
+    @Test
+    public void testCalculateChecksum() {
+        CertificateUpdate certificateUpdate = new CertificateUpdate();
+        assertEquals(6, certificateUpdate.calculateChecksum("DE123456789"));
+    }
 }
+
+
+// “13 14 1 2 3 4 5 6 7 8 9”
+//“2 3 2 4 2 2 6 4 10 6 14 8 18”.
