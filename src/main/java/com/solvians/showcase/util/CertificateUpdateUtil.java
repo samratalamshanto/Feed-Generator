@@ -9,7 +9,8 @@ public final class CertificateUpdateUtil {
     private CertificateUpdateUtil() {
     }
 
-    public static int getConversionValue(char inputChar) {  //provided table in readme
+    //provided table in readme, can store into map too which stores unnecessary in the heap memory.
+    public static int getConversionTableValue(char inputChar) {
         //A = 10 -> (char's ascii Value - A's ascii value  ) + 10 = 0+10
         //B = 11 -> (char's ascii Value - A's ascii value  ) + 10 = 1+10
         int asciiValue = inputChar - 'A';
@@ -26,10 +27,10 @@ public final class CertificateUpdateUtil {
     }
 
 
-    public synchronized static String generateISIN() {
+    public static synchronized String generateISIN() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        //first 2 char --> Asccii (65-90) [A-Z]
+        //first 2 char --> ASCII (65-90) [A-Z]
         for (int i = 0; i < 2; i++) {
             char ch = (char) CertificateUpdateUtil.getRandomIntegerInclusive(65, 90);
             stringBuilder.append(ch);
@@ -47,14 +48,16 @@ public final class CertificateUpdateUtil {
     }
 
     public static int calculateChecksum(String isin) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {  //char found in the range of max 3 digits
             char ch = isin.charAt(i);
             if (ch >= '0' && ch <= '9') {
                 continue;
             }
-            int tableValue = CertificateUpdateUtil.getConversionValue(ch);
+            int tableValue = CertificateUpdateUtil.getConversionTableValue(ch);
             StringBuilder stringBuilder = new StringBuilder(tableValue);
-            isin = isin.replace(String.valueOf(ch), stringBuilder.reverse().toString());  //replace with conversionTableValue in reverseOrder
+
+            //replace with conversionTableValue in reverseOrder
+            isin = isin.replace(String.valueOf(ch), stringBuilder.reverse().toString());
         }
 
         int sum = 0;

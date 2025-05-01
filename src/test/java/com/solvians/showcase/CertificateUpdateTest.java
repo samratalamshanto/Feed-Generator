@@ -29,7 +29,7 @@ class CertificateUpdateTest {
             if (ch >= '0' && ch <= '9') {
                 continue;
             }
-            int tableValue = CertificateUpdateUtil.getConversionValue(ch);
+            int tableValue = CertificateUpdateUtil.getConversionTableValue(ch);
             isin = isin.replace(String.valueOf(ch), String.valueOf(tableValue));
         }
         assertEquals("14262366618350", isin);
