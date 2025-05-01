@@ -1,10 +1,21 @@
+
 # Solvians Java Case Study
 
+# Problem Solution:
+1. Based on the given case, first update the property list in the CertificateUpdate class.
+2. Then write the functions in the CertificateUpdateUtil class and called them in the attributes of the CertificateUpdate
+   class.
+3. Write some test cases and verify them in the CertificateUpdateTest class.
+
+# Problem Details:
 ## Introduction – Feed Generator
 
-Our core business is to create financial websites for some of the top-tier financial institutions in the world. Those pages display information about financial products or so-called “certificates”, sourcing from numerous data feeds in our back-end system.
+Our core business is to create financial websites for some of the top-tier financial institutions in the world. Those
+pages display information about financial products or so-called “certificates”, sourcing from numerous data feeds in our
+back-end system.
 
-Certificate updates of data feed are the most important element in our applications. A certificate update has the following properties:
+Certificate updates of data feed are the most important element in our applications. A certificate update has the
+following properties:
 
 * Timestamp (number of milliseconds since January 1, 1970, 00:00:00 GMT)
 * ISIN (string, 2 random uppercase alphabets + 9 random alphanumeric characters + 1 check digit)
@@ -13,13 +24,18 @@ Certificate updates of data feed are the most important element in our applicati
 * Ask Price (random number, 2 decimal places, range between 100.00 and 200.00 inclusive)
 * Ask Size (random number, 0 decimal place, range between 1,000 and 10,000 inclusive)
 * Maturity Date (local date without timestamp in the next 2 years)
-* ISIN check digit calculation: 
+* ISIN check digit calculation:
 
 To calculate the check digit, the following steps should be followed:
-1.	Convert any letters to numbers by the conversion table below, e.g. “DE123456789” will be converted to “13 14 1 2 3 4 5 6 7 8 9”
-2.	Starting from the rightmost digit, every other digit is multiplied by two. In the example, we will have “2 3 2 4 2 2 6 4 10 6 14 8 18”.
-3.	Add up the resulting string of digits (numbers greater than 9 becoming two separate digits). In the example, we will have 2+3+2+4+2+2+6+4+1+0+6+1+4+8+1+8 = 54.
-4.	Subtract the sum from the smallest multiple of 10 which is greater than or equal to it, in the example we will have 60 – 54 = 6. 
+
+1. Convert any letters to numbers by the conversion table below, e.g. “DE123456789” will be converted to “13 14 1 2 3 4
+   5 6 7 8 9”
+2. Starting from the rightmost digit, every other digit is multiplied by two. In the example, we will have “2 3 2 4 2 2
+   6 4 10 6 14 8 18”.
+3. Add up the resulting string of digits (numbers greater than 9 becoming two separate digits). In the example, we will
+   have 2+3+2+4+2+2+6+4+1+0+6+1+4+8+1+8 = 54.
+4. Subtract the sum from the smallest multiple of 10 which is greater than or equal to it, in the example we will have
+   60 – 54 = 6.
 
 Conversion table for characters is:
 
@@ -30,23 +46,29 @@ C = 12	H = 17	M = 22	R = 27	W = 32
 D = 13	I = 18	N = 23	S = 28	X = 33	
 E = 14	J = 19	O = 24	T = 29	Y = 34	
 ```
+
 ## Implementation – Feed Generator
 
-* Write a ISIN Generator class with Unit tests to generate the ISIN string. This is the most central part of the case study.
+* Write a ISIN Generator class with Unit tests to generate the ISIN string. This is the most central part of the case
+  study.
 
-* Write a Callable<String> class with Unit test to generate one line of certificate update, in which the described properties are comma separated (thousand-separator is not needed):
-    `1352122280502,DE1234567896,101.23,1000,103.45,1000`
+* Write a Callable<String> class with Unit test to generate one line of certificate update, in which the described
+  properties are comma separated (thousand-separator is not needed):
+  `1352122280502,DE1234567896,101.23,1000,103.45,1000`
 
-* Generating random numbers is not important in this implementation, you can write a very simple generator or use the following sample: 
+* Generating random numbers is not important in this implementation, you can write a very simple generator or use the
+  following sample:
+
 ```java
         ThreadLocalRandom random = ThreadLocalRandom.current();
 ```
 
 * Use the `App` main class to
-  - Take 2 parameters: (a) Number of threads, and (b) Number of certificate updates, and then (this part is already implemented and tested)
-  - According to the parameters, trigger the certificate generations in multi-threads, and
-  - Finally, collect and print the lines of generated certificate updates
-  
-Feel free to edit, improve, fix the existing code. Include testing. 
+    - Take 2 parameters: (a) Number of threads, and (b) Number of certificate updates, and then (this part is already
+      implemented and tested)
+    - According to the parameters, trigger the certificate generations in multi-threads, and
+    - Finally, collect and print the lines of generated certificate updates
+
+Feel free to edit, improve, fix the existing code. Include testing.
 
 We will be running our own tests, so design your objects to be testable.
