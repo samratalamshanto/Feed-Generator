@@ -17,12 +17,12 @@ class CertificateUpdateTest {
     }
 
     @Test
-    public void generateISIN() {
+    void generateISIN() {
         System.out.println(CertificateUpdateUtil.generateISIN());
     }
 
     @Test
-    public void replaceWithConversionTable() {
+    void replaceWithConversionTable() {
         String isin = "EQ2366618350";
         for (int i = 0; i < 3; i++) {
             char ch = isin.charAt(i);
@@ -37,12 +37,12 @@ class CertificateUpdateTest {
 
 
     @Test
-    public void testCalculateChecksum() {
+    void testCalculateChecksum() {
         assertEquals(6, CertificateUpdateUtil.calculateChecksum("DE123456789"));
     }
 
     @Test
-    public void testCallableClass() {
+    void testCallableClass() {
         CertificateUpdate certificateUpdate = new CertificateUpdate(1352122280502l, "DE1234567896", 101.23, 1000, 103.45, 1000);
         System.out.println(certificateUpdate);
     }
