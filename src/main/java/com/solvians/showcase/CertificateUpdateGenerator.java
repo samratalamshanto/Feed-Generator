@@ -16,11 +16,10 @@ public class CertificateUpdateGenerator {
 
     public Stream<CertificateUpdate> generateQuotes() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        // TODO: Implement me.
         List<CertificateUpdate> updateList = new ArrayList<CertificateUpdate>();
         for (int i = 0; i < threads * quotes; i++) {
             updateList.add(new CertificateUpdate());
         }
-        return Stream.generate(CertificateUpdate::new).parallel().limit(quotes);
+        return Stream.generate(CertificateUpdate::new).parallel().limit(threads * quotes);
     }
 }

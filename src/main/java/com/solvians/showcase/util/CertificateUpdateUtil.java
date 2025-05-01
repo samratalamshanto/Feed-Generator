@@ -26,7 +26,7 @@ public final class CertificateUpdateUtil {
     }
 
 
-    public static String generateISIN() {
+    public synchronized static String generateISIN() {
         StringBuilder stringBuilder = new StringBuilder();
 
         //first 2 char --> Asccii (65-90) [A-Z]
