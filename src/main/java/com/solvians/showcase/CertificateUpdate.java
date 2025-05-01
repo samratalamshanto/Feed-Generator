@@ -1,24 +1,21 @@
 package com.solvians.showcase;
 
-import com.solvians.showcase.util.AppUtil;
+import com.solvians.showcase.util.CertificateUpdateUtil;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CertificateUpdate {
     private Long timestamp = System.currentTimeMillis();
-    private String isin = generateISIN();
-    private Double bidPrice;
-    private int bidSize;
-    private Double askPrice;
-    private int askSize;
-    private LocalDate maturityDate;
+    private String isin = CertificateUpdateUtil.generateISIN();
+    private Double bidPrice = CertificateUpdateUtil.getRandomDoubleInclusive(100, 200);
+    private int bidSize = CertificateUpdateUtil.getRandomIntegerInclusive(1000, 5000);
+    private Double askPrice = CertificateUpdateUtil.getRandomDoubleInclusive(100, 200);
+    private int askSize = CertificateUpdateUtil.getRandomIntegerInclusive(1000, 10000);
+    private LocalDate maturityDate = LocalDate.now();
+
 
     public CertificateUpdate() {
     }
-
 
     public CertificateUpdate(Long timestamp, String isin, Double bidPrice, int bidSize, Double askPrice, int askSize, LocalDate maturityDate) {
         this.timestamp = timestamp;
@@ -31,63 +28,61 @@ public class CertificateUpdate {
     }
 
 
-    public String generateISIN() {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        //first 2 char --> Asccii (65-90) [A-Z]
-        int sum = 0;
-        for (int i = 0; i < 2; i++) {
-            int randomInt = AppUtil.getRandomValueInclusive(65, 90);
-            sum += randomInt;
-            char ch = (char) randomInt;
-            stringBuilder.append(ch);
-        }
-
-        //random int--> 0-9
-        for (int i = 0; i < 9; i++) {
-            int randomInt = AppUtil.getRandomValueInclusive(0, 9);
-            sum += randomInt;
-            stringBuilder.append(randomInt);
-        }
-
-        //checkSum
-        stringBuilder.append(calculateChecksum(stringBuilder.toString()));
-
-        return stringBuilder.toString();
+    //getter and setter
+    public String getIsin() {
+        return isin;
     }
 
-    public int calculateChecksum(String isin) {
-        for (int i = 0; i < 3; i++) {
-            char ch = isin.charAt(i);
-            if (ch >= '0' && ch <= '9') {
-                continue;
-            }
-            int tableValue = AppUtil.getConversionValue(ch);
-            StringBuilder stringBuilder = new StringBuilder(tableValue);
-            isin = isin.replace(String.valueOf(ch), stringBuilder.reverse().toString());
-        }
-        int sum = 0;
-        List<Integer> list = new ArrayList<>();
-        for (int i = isin.length() - 1; i >= 0; i--) {
-            char ch = isin.charAt(i);
-            int numValue = Character.getNumericValue(ch);
-            list.add(10 * numValue);
-            if (i % 2 != 0) {
-                sum += (2 * numValue);
-            } else {
-                sum += numValue;
-            }
-        }
-
-        list = list.stream().sorted().collect(Collectors.toList());
-        for (Integer singleNum : list) {
-            if (singleNum == sum) {
-                return 0;
-            } else if (singleNum > sum) {
-                return singleNum - sum;
-            }
-        }
-
-        return 0;
+    public void setIsin(String isin) {
+        this.isin = isin;
     }
+
+    public Double getBidPrice() {
+        return bidPrice;
+    }
+
+    public void setBidPrice(Double bidPrice) {
+        this.bidPrice = bidPrice;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public int getBidSize() {
+        return bidSize;
+    }
+
+    public void setBidSize(int bidSize) {
+        this.bidSize = bidSize;
+    }
+
+    public Double getAskPrice() {
+        return askPrice;
+    }
+
+    public void setAskPrice(Double askPrice) {
+        this.askPrice = askPrice;
+    }
+
+    public int getAskSize() {
+        return askSize;
+    }
+
+    public void setAskSize(int askSize) {
+        this.askSize = askSize;
+    }
+
+    public LocalDate getMaturityDate() {
+        return maturityDate;
+    }
+
+    public void setMaturityDate(LocalDate maturityDate) {
+        this.maturityDate = maturityDate;
+    }
+
 }

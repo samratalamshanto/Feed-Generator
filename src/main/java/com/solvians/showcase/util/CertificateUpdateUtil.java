@@ -1,0 +1,91 @@
+package com.solvians.showcase.util;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+public final class CertificateUpdateUtil {
+    public static final Random random = new Random();
+
+    private CertificateUpdateUtil() {
+    }
+
+    public static int getConversionValue(char inputChar) {
+        //A = 10 -> (char's ascii Value - A's ascii value  ) + 10 = 0+10
+        //B = 11 -> (char's ascii Value - A's ascii value  ) + 10 = 1+10
+        int asciiValue = inputChar - 'A';
+        return asciiValue + 10;
+    }
+
+    public static int getRandomIntegerInclusive(int min, int max) {
+        return random.nextInt(max + 1 - min) + min;
+    }
+
+    public static Double getRandomDoubleInclusive(int min, int max) {
+        return random.nextDouble(max + 1 - min) + min;
+    }
+
+
+    public static String generateISIN() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        //first 2 char --> Asccii (65-90) [A-Z]
+        int sum = 0;
+        for (int i = 0; i < 2; i++) {
+            int randomInt = CertificateUpdateUtil.getRandomIntegerInclusive(65, 90);
+            sum += randomInt;
+            char ch = (char) randomInt;
+            stringBuilder.append(ch);
+        }
+
+        //random int--> 0-9
+        for (int i = 0; i < 9; i++) {
+            int randomInt = CertificateUpdateUtil.getRandomIntegerInclusive(0, 9);
+            sum += randomInt;
+            stringBuilder.append(randomInt);
+        }
+
+        //checkSum
+        stringBuilder.append(calculateChecksum(stringBuilder.toString()));
+
+        return stringBuilder.toString();
+    }
+
+    public static int calculateChecksum(String isin) {
+        for (int i = 0; i < 3; i++) {
+            char ch = isin.charAt(i);
+            if (ch >= '0' && ch <= '9') {
+                continue;
+            }
+            int tableValue = CertificateUpdateUtil.getConversionValue(ch);
+            StringBuilder stringBuilder = new StringBuilder(tableValue);
+            isin = isin.replace(String.valueOf(ch), stringBuilder.reverse().toString());  //replace with conversionTableValue in reverseOrder
+        }
+
+        int sum = 0;
+        List<Integer> list = new ArrayList<>();
+        for (int i = isin.length() - 1; i >= 0; i--) {
+            char ch = isin.charAt(i);
+            int numValue = Character.getNumericValue(ch);
+            list.add(10 * numValue);
+            if (i % 2 != 0) {
+                sum += (2 * numValue);
+            } else {
+                sum += numValue;
+            }
+        }
+
+        list = list.stream().sorted().collect(Collectors.toList());
+        for (Integer singleNum : list) {
+            if (singleNum == sum) {
+                return 0;
+            } else if (singleNum > sum) {
+                return singleNum - sum;
+            }
+        }
+
+        return 0;
+    }
+
+}

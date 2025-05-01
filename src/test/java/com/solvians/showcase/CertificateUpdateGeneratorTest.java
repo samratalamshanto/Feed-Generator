@@ -1,6 +1,5 @@
 package com.solvians.showcase;
 
-import com.solvians.showcase.util.AppUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.Stream;

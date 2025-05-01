@@ -1,6 +1,6 @@
 package com.solvians.showcase;
 
-import com.solvians.showcase.util.AppUtil;
+import com.solvians.showcase.util.CertificateUpdateUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,9 +18,7 @@ class CertificateUpdateTest {
 
     @Test
     public void generateISIN() {
-        CertificateUpdate certificateUpdate = new CertificateUpdate();
-        System.out.println(certificateUpdate.generateISIN());
-
+        System.out.println(CertificateUpdateUtil.generateISIN());
     }
 
     @Test
@@ -31,7 +29,7 @@ class CertificateUpdateTest {
             if (ch >= '0' && ch <= '9') {
                 continue;
             }
-            int tableValue = AppUtil.getConversionValue(ch);
+            int tableValue = CertificateUpdateUtil.getConversionValue(ch);
             isin = isin.replace(String.valueOf(ch), String.valueOf(tableValue));
         }
         assertEquals("14262366618350", isin);
@@ -40,8 +38,7 @@ class CertificateUpdateTest {
 
     @Test
     public void testCalculateChecksum() {
-        CertificateUpdate certificateUpdate = new CertificateUpdate();
-        assertEquals(6, certificateUpdate.calculateChecksum("DE123456789"));
+        assertEquals(6, CertificateUpdateUtil.calculateChecksum("DE123456789"));
     }
 }
 
