@@ -40,6 +40,12 @@ class CertificateUpdateTest {
     public void testCalculateChecksum() {
         assertEquals(6, CertificateUpdateUtil.calculateChecksum("DE123456789"));
     }
+
+    @Test
+    public void testCallableClass() {
+        CertificateUpdate certificateUpdate = new CertificateUpdate(1352122280502l, "DE1234567896", 101.23, 1000, 103.45, 1000);
+        System.out.println(certificateUpdate);
+    }
 }
 
 
