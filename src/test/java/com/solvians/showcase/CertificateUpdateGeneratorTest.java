@@ -17,26 +17,4 @@ class CertificateUpdateGeneratorTest {
         assertNotNull(quotes);
         assertEquals(10 * 100, quotes.count());
     }
-
-    @Test
-    public void generateISIN() {
-        CertificateUpdate certificateUpdate = new CertificateUpdate();
-        System.out.println(certificateUpdate.generateISIN());
-
-    }
-
-    @Test
-    public void generateISIN2() {
-        String isin = "EQ2366618350";
-        for (int i = 0; i < isin.length(); i++) {
-            char ch = isin.charAt(i);
-            if (ch >= '0' && ch <= '9') {
-                continue;
-            }
-            int tableValue = AppUtil.getConversionValue(ch);
-            isin = isin.replace(String.valueOf(ch), String.valueOf(tableValue));
-        }
-        System.out.println(isin);
-    }
-
 }
