@@ -2,16 +2,14 @@ package com.solvians.showcase.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public final class CertificateUpdateUtil {
-    public static final Random random = new Random();
-
     private CertificateUpdateUtil() {
     }
 
-    public static int getConversionValue(char inputChar) {
+    public static int getConversionValue(char inputChar) {  //provided table in readme
         //A = 10 -> (char's ascii Value - A's ascii value  ) + 10 = 0+10
         //B = 11 -> (char's ascii Value - A's ascii value  ) + 10 = 1+10
         int asciiValue = inputChar - 'A';
@@ -19,11 +17,12 @@ public final class CertificateUpdateUtil {
     }
 
     public static int getRandomIntegerInclusive(int min, int max) {
-        return random.nextInt(max + 1 - min) + min;
+        return ThreadLocalRandom.current().nextInt(max + 1 - min) + min;
     }
 
-    public static Double getRandomDoubleInclusive(int min, int max) {
-        return random.nextDouble(max + 1 - min) + min;
+    public static Double getRandomDoubleInclusive(double min, double max) {
+        double value = ThreadLocalRandom.current().nextDouble(min, max + 0.01);
+        return Math.round(value * 100.0) / 100.0; // round to 2 decimal
     }
 
 
@@ -31,19 +30,14 @@ public final class CertificateUpdateUtil {
         StringBuilder stringBuilder = new StringBuilder();
 
         //first 2 char --> Asccii (65-90) [A-Z]
-        int sum = 0;
         for (int i = 0; i < 2; i++) {
-            int randomInt = CertificateUpdateUtil.getRandomIntegerInclusive(65, 90);
-            sum += randomInt;
-            char ch = (char) randomInt;
+            char ch = (char) CertificateUpdateUtil.getRandomIntegerInclusive(65, 90);
             stringBuilder.append(ch);
         }
 
         //random int--> 0-9
         for (int i = 0; i < 9; i++) {
-            int randomInt = CertificateUpdateUtil.getRandomIntegerInclusive(0, 9);
-            sum += randomInt;
-            stringBuilder.append(randomInt);
+            stringBuilder.append(CertificateUpdateUtil.getRandomIntegerInclusive(0, 9));
         }
 
         //checkSum
