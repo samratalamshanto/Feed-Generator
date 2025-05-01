@@ -2,7 +2,6 @@ package com.solvians.showcase;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 public class CertificateUpdateGenerator {

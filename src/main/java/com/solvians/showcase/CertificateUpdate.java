@@ -24,6 +24,7 @@ public class CertificateUpdate {
 
 
     public CertificateUpdate() {
+        System.out.println(this.toString());
     }
 
     @Override
